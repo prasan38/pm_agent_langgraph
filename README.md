@@ -53,4 +53,24 @@ State flows through a `PMAgentState` TypedDict (`graph_state/state.py`), the sin
 5. **`synthesize_node`** (`node/synthesize_node.py`) — reached once `status` is `ready_to_write`. Asks the LLM for a structured `DecisionRecord` and `list[UserStory]` from `initial_request`, `kb_context`, and `answers`. Sets `status` to `published`.
 6. **`write_node`** (`node/write_node.py`) — renders the decision record and user stories to markdown and writes them to `features/feature_<date>.md`.
 
+## Future Development
+
+**Knowledge & Retrieval**
+- Vector store for KB ingestion, replacing the current whole-file `load_kb_node` approach, for faster, more token-efficient retrieval that scales past the current 40-file/8000-char caps.
+
+**Chat Integrations**
+- Microsoft Teams bot integration, so users can launch the agent and answer clarifying questions (HITL) from a Teams chat instead of stdin.
+
+**Output Destinations**
+- Confluence publishing, writing the decision record and user stories directly to a Confluence page instead of (or alongside) the local `features/feature_<date>.md` file.
+
+**Observability & Evals**
+- Structured logging/tracing (e.g. LangSmith) across graph nodes.
+- An eval suite for clarify-question quality and decision-record/user-story quality.
+
+**Auth & Multi-tenancy**
+- Authentication for chat surfaces (Teams bot) and Confluence writes.
+- Secrets management beyond local `.env` files.
+- Per-team/workspace isolation for concurrent users.
+
 See [CLAUDE.md](CLAUDE.md) for more detail.
